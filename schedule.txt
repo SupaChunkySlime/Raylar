@@ -1,0 +1,22 @@
+command(client, ['newSchedule', 'createSchedule', 'addSchedule'], message => {
+        const filter = m => m.author.id === message.author.id;
+    message.reply("Please enter your schedule info.\n\n> Expires in 5 Minutes, Type `cancel` to cancel!")
+	    .then(msg => msg.delete(300000)) 
+		.catch(err => {})  
+    message.channel.awaitMessages(filter, {
+	errors: ['time'] 
+    }).then(async(collected) => { 
+	if (collected.first().content.toLowerCase() == 'cancel') { 
+		message.reply(":sob: The command has been cancelled.") 
+	} 
+        userSchedule = collected.first().content
+    }).catch(() => {
+	message.reply("You took too long!")
+    })
+        
+    })
+    command(client, ['scheduleList', 'listSchedule', 'listSchedules'], message => {
+        message.channel.send(userSchedule)
+    })
+    
+})
